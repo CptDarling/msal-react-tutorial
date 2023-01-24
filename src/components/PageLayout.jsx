@@ -13,8 +13,8 @@ export const PageLayout = (props) => {
   return (
     <>
       <Navbar bg="primary" variant="dark">
-        <a className="navbar-brand"href="/">MSAL React Tutorial</a>
-        { isAthenticated ? <SignOutButton /> : <SignInButton />}
+        <a className="navbar-brand" href="/">MSAL React Tutorial</a>
+        {isAthenticated ? <SignOutButton /> : <SignInButton />}
       </Navbar>
       <h5><center>Welcome to the Microsoft Authentication Library For React Turorial</center></h5>
       <br />
