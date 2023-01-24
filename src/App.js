@@ -1,13 +1,13 @@
-import './App.css';
 import React from 'react';
 import { PageLayout } from './components/PageLayout';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
+import { ProfileContent } from './components/ProfileContent';
 
 function App() {
   return (
     <PageLayout>
       <AuthenticatedTemplate>
-        <p>You are signed in!</p>
+        <ProfileContent />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <p>You are not signed in! Please sign in.</p>
