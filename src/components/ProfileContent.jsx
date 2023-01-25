@@ -2,14 +2,16 @@ import { useMsal } from "@azure/msal-react";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { loginRequest } from "../authConfig";
+import { callMsGraph } from "../graph";
+import { ProfileData } from "./ProfileData";
 
 export const ProfileContent = () => {
-  const { instance, accounts, inProgress } = useMsal();
-  const [accessToken, setAccessToken] = useState(null);
+  const { instance, accounts } = useMsal();
+  const [graphData, setGraphData] = useState(null);
 
   const name = accounts[0] && accounts[0].name;
 
-  function RequestAccessToken() {
+  function RequestProfileData() {
     const request = {
       ...loginRequest,
       account: accounts[0],
@@ -17,10 +19,10 @@ export const ProfileContent = () => {
 
     // Silently acquires an access token which is then attached to a request for Microsoft Graph data
     instance.acquireTokenSilent(request).then((response) => {
-      setAccessToken(response.accessToken);
+      callMsGraph(response.accessToken).then(response => setGraphData(response));
     }).catch((e) => {
       instance.acquireTokenPopup(request).then((response) => {
-        setAccessToken(response.accessToken);
+        callMsGraph(response.accessToken).then(response => setGraphData(response));
       });
     });
   }
@@ -28,10 +30,10 @@ export const ProfileContent = () => {
   return (
     <>
       <h5 className="card-title">Welcome {name}</h5>
-      {accessToken ?
-        <p>Access Token Acquired!</p>
+      {graphData ?
+        <ProfileData graphData={graphData} />
         :
-        <Button variant="secondary" onClick={RequestAccessToken}>Request Access Token</Button>
+        <Button variant="secondary" onClick={RequestProfileData}>Request Profile Information</Button>
       }
     </>
   );
